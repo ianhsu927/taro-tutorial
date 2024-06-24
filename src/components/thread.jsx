@@ -1,17 +1,9 @@
-import Taro, { eventCenter } from "@tarojs/taro";
+import { eventCenter, navigateTo } from "@tarojs/taro";
 import { View, Text, Image } from "@tarojs/components";
 import {} from "../utils/api";
 import {} from "../utils";
 
-const Thread = ({
-  title,
-  node,
-  last_modified,
-  replies,
-  tid,
-  member,
-  not_navi,
-}) => {
+const Thread = ({ title, node, last_modified, replies, tid, member, not_navi, setThread }) => {
   const time = last_modified;
   const usernameCls = `author ${not_navi ? "bold" : ""}`;
 
@@ -19,11 +11,9 @@ const Thread = ({
     <View
       className='thread'
       onClick={() => {
-        if (not_navi) {
-          return;
-        }
-        eventCenter.trigger("thread-click", { tid });
-        Taro.navigateTo({
+        if (not_navi) return;
+        setThread({ title, node, last_modified, replies, tid, member });
+        navigateTo({
           url: "/pages/thread_detail/thread_detail",
         });
       }}
@@ -47,4 +37,5 @@ const Thread = ({
   );
 };
 
-export { Thread };
+const mapDispatchToProps = (dispatch) => {};
+export default connect(null, mapDispatchToProps)(Thread);
